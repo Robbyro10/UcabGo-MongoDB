@@ -9,6 +9,8 @@ const app = express();
 // DataBase
 dbConnection();
 
+console.log('testing something');
+
 // CORS
 app.use(cors());
 
