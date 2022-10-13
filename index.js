@@ -9,8 +9,6 @@ const app = express();
 // DataBase
 dbConnection();
 
-console.log('testing something');
-
 // CORS
 app.use(cors());
 
@@ -23,6 +21,7 @@ app.use(express.json());
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/products', require('./routes/products'));
+app.use('/api/orders', require('./routes/orders'));
 
 //listen petitions
 app.listen(process.env.PORT, () => {
