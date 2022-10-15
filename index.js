@@ -19,9 +19,10 @@ app.use( express.static( 'public' ));
 app.use(express.json());
 
 // Routes
-app.use('/api/auth', require('./routes/auth'));
+app.use('/api/clients', require('./routes/clients'));
 app.use('/api/products', require('./routes/products'));
 app.use('/api/orders', require('./routes/orders'));
+app.use('/api/stores', require('./routes/stores'));
 
 //listen petitions
 app.listen(process.env.PORT, () => {
