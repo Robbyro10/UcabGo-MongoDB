@@ -10,7 +10,6 @@ router.post(
     '/new', 
     [
         check('name', 'El nombre es obligatorio').not().isEmpty(),
-        check('title', 'El titulo es obligatorio').not().isEmpty(),
         check('email', 'El email es obligatorio').isEmail(),
         check('phone', 'El numero telefonico es obligatorio').not().isEmpty(),
         check('desc', 'La descripcion es obligatoria').not().isEmpty(),

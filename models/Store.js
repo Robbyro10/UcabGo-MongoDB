@@ -19,11 +19,6 @@ const StoreSchema = Schema({
         type: String,
         required: true,
     },
-    title: {
-        type: String,
-        required: true,
-        unique: true,
-    },
     rif: {
         type: String,
         unique: true,

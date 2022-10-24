@@ -3,7 +3,7 @@ const Product = require('../models/Product');
 
 const getProduct = async (req, res = response) => {
 
-    const products = await Product.find().populate('user', 'name');
+    const products = await Product.find().populate('store', 'name');
 
     res.json({
         ok: true,
@@ -16,7 +16,7 @@ const createProduct = async (req, res = response) => {
     const product = new Product(req.body);
     
     try {
-        product.user = req.uid;
+        product.store = req.uid;
 
         const savedProduct = await product.save();
 
@@ -52,7 +52,7 @@ const updateProduct = async (req, res = response) => {
             })
         }
 
-        if (product.user.toString() !== uid) {
+        if (product.store.toString() !== uid) {
             return res.status(401).json({
                 ok: false,
                 msg: 'No tiene el privilegio de editar ese producto'
@@ -61,7 +61,7 @@ const updateProduct = async (req, res = response) => {
 
         const newProduct = {
             ...req.body,
-            user: uid
+            store: uid
         }
 
         const updatedProduct = await Product.findByIdAndUpdate(productId, newProduct, {new: true});
@@ -95,7 +95,7 @@ const deleteProduct = async (req, res = response) => {
             })
         }
 
-        if ( product.user.toString() !== uid ) {
+        if ( product.store.toString() !== uid ) {
             return res.status(401).json({
                 ok: false,
                 msg: 'No tiene el privilegio de eliminar ese producto'

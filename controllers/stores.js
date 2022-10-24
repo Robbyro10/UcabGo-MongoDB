@@ -1,4 +1,4 @@
-const {response, request} = require('express');
+const {response} = require('express');
 const bcrypt = require('bcryptjs');
 const Store = require('../models/Store');
 const { generarJWT } = require('../helpers/jwt')
@@ -32,7 +32,6 @@ const createStore = async (req, res = response) => {
 
         res.status(201).json({
             ok: true,
-            title: store.title,
             uid: store.id,
             name: store.name,
             token

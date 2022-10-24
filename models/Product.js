@@ -13,9 +13,9 @@ const ProductSchema = Schema({
         type: Number,
         required: true
     },
-    user: {
+    store: {
         type: Schema.Types.ObjectId,
-        ref: 'Client',
+        ref: 'Store',
         required: true
     },
 });
