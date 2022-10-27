@@ -15,7 +15,7 @@ router.get('/', getProduct);
 // Crear un nuevo producto
 router.post('/',
     [
-        check('title', 'El titulo es obligatorio').not().isEmpty(),
+        check('name', 'El nombre es obligatorio').not().isEmpty(),
         check('desc', 'La Descripcion es obligatoria').not().isEmpty(),
         check('price', 'El precio es obligatorio').not().isEmpty(),
         validarCampos
@@ -25,7 +25,7 @@ router.post('/',
 
 // Actualizar producto
 router.put('/:id', [
-    check('title', 'El titulo es obligatorio').not().isEmpty(),
+    check('name', 'El nombre es obligatorio').not().isEmpty(),
     check('desc', 'La Descripcion es obligatoria').not().isEmpty(),
     check('price', 'El precio es obligatorio').not().isEmpty(),
     validarCampos

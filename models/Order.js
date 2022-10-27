@@ -5,6 +5,14 @@ const OrderSchema = Schema({
         type: String,
         required: true
     },
+    payment: {
+        type: String, 
+        required: true
+    },
+    time: {
+        type: String,
+        required: true
+    },
     user: {
         type: Schema.Types.ObjectId,
         ref: 'Client',
