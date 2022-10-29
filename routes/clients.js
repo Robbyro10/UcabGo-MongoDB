@@ -11,6 +11,7 @@ router.post(
     [
         check('name', 'El nombre es obligatorio').not().isEmpty(),
         check('email', 'El email es obligatorio').isEmail(),
+        check('email', 'Debe ser un correo de la UCAB').contains('ucab.edu.ve'),
         check('phone', 'El numero telefonico es obligatorio').not().isEmpty(),
         check('password', 'El password debe ser de 6 caracteres').isLength({min: 6}),
         validarCampos

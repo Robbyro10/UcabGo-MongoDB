@@ -15,6 +15,11 @@ const StoreSchema = Schema({
         required: true,
         unique: true,
     },
+    rif: {
+        type: String,
+        required: true,
+        unique: true,
+    },
     password: {
         type: String,
         required: true,

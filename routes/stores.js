@@ -13,6 +13,7 @@ router.post(
         check('email', 'El email es obligatorio').isEmail(),
         check('phone', 'El numero telefonico es obligatorio').not().isEmpty(),
         check('desc', 'La descripcion es obligatoria').not().isEmpty(),
+        check('rif', 'El rif es obligatorio').not().isEmpty(),
         check('password', 'El password debe ser de 6 caracteres').isLength({min: 6}),
         check('location', 'La ubicacion es obligatoria').not().isEmpty(),
         validarCampos
