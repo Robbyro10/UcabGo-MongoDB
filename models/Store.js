@@ -19,9 +19,9 @@ const StoreSchema = Schema({
         type: String,
         required: true,
     },
-    rif: {
+    location: {
         type: String,
-        unique: true,
+        required: true,
     },
     desc: {
         type: String,

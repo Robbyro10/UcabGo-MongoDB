@@ -12,6 +12,37 @@ const getOrder = async (req, res = response) => {
     });
 }
 
+const getOrderByStoreId = async (req, res = response) => {
+
+    const storeId = req.params.id;
+    
+
+    try {
+        const orders = await Order.find().populate("product").find({"store": storeId})
+        console.log(orders[0].product.store._id);
+
+        if (!orders) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Orders not found from that store'
+            })
+        }
+
+        res.json({
+            ok: true,
+            orders
+        });
+
+
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            msg: 'Que carajoo?'
+        })
+    }
+}
+
+
 const createOrder = async (req, res = response) => {
 
     const order = new Order(req.body);
@@ -78,6 +109,7 @@ const deleteOrder = async (req, res = response) => {
 
 module.exports = {
     getOrder,
+    getOrderByStoreId,
     createOrder,
     deleteOrder,
 }

@@ -3,7 +3,7 @@ const Product = require('../models/Product');
 
 const getProduct = async (req, res = response) => {
 
-    const products = await Product.find().populate('store', 'name');
+    const products = await Product.find();
 
     res.json({
         ok: true,
@@ -33,6 +33,35 @@ const createProduct = async (req, res = response) => {
             ok: false, 
             msg: 'Algo salio mal'
         });
+    }
+}
+
+const getProductById = async (req, res = response) => {
+
+    const productId = req.params.id;
+
+    try {
+        
+        const product = await Product.findById(productId);
+
+        if (!product) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Product not found with id'
+            })
+        }
+
+        res.json({
+            ok: true,
+            product
+        });
+
+
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            msg: 'Algo salio mal'
+        })
     }
 }
 
@@ -120,6 +149,7 @@ const deleteProduct = async (req, res = response) => {
 
 module.exports = {
     getProduct,
+    getProductById,
     createProduct,
     updateProduct,
     deleteProduct,

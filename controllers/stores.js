@@ -5,7 +5,6 @@ const { generarJWT } = require('../helpers/jwt')
 
 const createStore = async (req, res = response) => {
 
-
    const {email, password} = req.body;
     
     try {
@@ -40,7 +39,7 @@ const createStore = async (req, res = response) => {
     } catch (error) {
         res.status(500).json({
             ok: false,
-            msg: 'Por favor hable con el admin'
+            msg: error
         });
     }
     
@@ -93,10 +92,36 @@ const getStores = async(req, res = response) => {
 
     const stores = await Store.find();
 
-    res.json({
-        ok: true,
-        stores
-    });
+    res.json({stores});
+}
+
+const getStoreById = async(req, res = response) => {
+
+    const storeId = req.params.id;
+
+    try {
+        
+        const store = await Store.findById(storeId);
+
+        if (!store) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Store not found with id'
+            })
+        }
+
+        res.json({
+            ok: true,
+            store
+        });
+
+
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            msg: 'Que carajoo?'
+        })
+    }
 }
 
 const revalidarToken = async (req, res = response) => {
@@ -118,5 +143,6 @@ module.exports = {
     createStore,
     loginStore,
     getStores,
+    getStoreById,
     revalidarToken
 }
