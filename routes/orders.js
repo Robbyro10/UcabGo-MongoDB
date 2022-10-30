@@ -19,6 +19,7 @@ router.post('/',
     [
         check('location', 'La ubicacion es obligatoria').not().isEmpty(),
         check('payment', 'El metodo de pago es obligatorio').not().isEmpty(),
+        check('appearance', 'La descripcion de aparienca es obligatoria').not().isEmpty(),
         validarCampos
     ],
     createOrder

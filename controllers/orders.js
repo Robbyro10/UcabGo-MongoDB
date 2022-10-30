@@ -19,7 +19,14 @@ const getOrderByStoreId = async (req, res = response) => {
     
     try {
         
-        const orders = await Order.find().populate('product')
+        const orders = await Order.find().populate('product user')
+
+        // const orders = await Order.find({"product.store._id": storeId}).populate({ 
+        //     path: 'product',
+        //     populate: {
+        //       path: 'store',
+        //     } 
+        //  })
 
         const filteredOrders = orders.filter((order) => JSON.stringify(order.product.store._id) == `"${storeId}"`);
 

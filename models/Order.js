@@ -19,6 +19,9 @@ const OrderSchema = Schema({
     day: {
         type: String,
     },
+    appearance: {
+        type: String,
+    },
     user: {
         type: Schema.Types.ObjectId,
         ref: 'Client',
