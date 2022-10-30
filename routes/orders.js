@@ -2,7 +2,7 @@ const { Router } = require("express");
 const { check } = require("express-validator");
 const {validarCampos} = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { getOrder, getOrderByStoreId, createOrder, deleteOrder } = require('../controllers/orders');
+const { getOrder, createOrder, deleteOrder, getOrderByStoreId } = require('../controllers/orders');
 
 const router = Router();
 

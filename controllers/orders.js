@@ -16,12 +16,14 @@ const getOrderByStoreId = async (req, res = response) => {
 
     const storeId = req.params.id;
     
-
+    
     try {
-        const orders = await Order.find().populate("product").find({"store": storeId})
-        console.log(orders[0].product.store._id);
+        
+        const orders = await Order.find().populate('product')
 
-        if (!orders) {
+        const filteredOrders = orders.filter((order) => JSON.stringify(order.product.store._id) == `"${storeId}"`);
+
+        if (!filteredOrders) {
             return res.status(404).json({
                 ok: false,
                 msg: 'Orders not found from that store'
@@ -30,7 +32,7 @@ const getOrderByStoreId = async (req, res = response) => {
 
         res.json({
             ok: true,
-            orders
+            filteredOrders
         });
 
 
