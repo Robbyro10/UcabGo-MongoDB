@@ -28,6 +28,9 @@ const StoreSchema = Schema({
         type: String,
         required: true,
     },
+    img: {
+        type: String
+    },
     desc: {
         type: String,
         required: true,
