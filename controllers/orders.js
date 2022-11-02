@@ -15,7 +15,7 @@ const getOrder = async (req, res = response) => {
 const getOrderByStoreId = async (req, res = response) => {
 
     const storeId = req.params.id;
-    
+
     
     try {
         
@@ -39,7 +39,7 @@ const getOrderByStoreId = async (req, res = response) => {
     } catch (error) {
         res.status(500).json({
             ok: false,
-            msg: 'Que carajoo?'
+            error
         })
     }
 }
