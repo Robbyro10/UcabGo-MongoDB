@@ -6,7 +6,6 @@ const { generarJWT } = require('../helpers/jwt')
 const crearAdmin = async (req, res = response) => {
 
     const {email, password} = req.body;
-    const validEmails = ["jgh2748@gmail.com", "marugalvis04@gmail.com", "luiselian001@gmail.com", "Joywg14@gmail.com"]
     
     try {
 
@@ -16,13 +15,6 @@ const crearAdmin = async (req, res = response) => {
             return res.status(400).json({
                 ok: false,
                 msg:'Un administrador ya existe con ese correo'
-            })
-        }
-
-        if (!validEmails.includes(email)) {
-            return res.status(400).json({
-                ok: false,
-                msg:'Acceso negado'
             })
         }
 
