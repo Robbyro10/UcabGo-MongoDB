@@ -3,7 +3,7 @@ const Product = require('../models/Product');
 
 const getProduct = async (req, res = response) => {
 
-    const products = await Product.find();
+    const products = await Product.find().populate('store','name');
 
     res.json({
         ok: true,
@@ -81,13 +81,6 @@ const updateProduct = async (req, res = response) => {
             })
         }
 
-        if (product.store.toString() !== uid) {
-            return res.status(401).json({
-                ok: false,
-                msg: 'No tiene el privilegio de editar ese producto'
-            })
-        }
-
         const newProduct = {
             ...req.body,
             store: uid
@@ -121,13 +114,6 @@ const deleteProduct = async (req, res = response) => {
             return res.status(404).json({
                 ok: false,
                 msg: 'Product not found with id'
-            })
-        }
-
-        if ( product.store.toString() !== uid ) {
-            return res.status(401).json({
-                ok: false,
-                msg: 'No tiene el privilegio de eliminar ese producto'
             })
         }
 

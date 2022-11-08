@@ -12,6 +12,9 @@ router.get('/', getOrder);
 // Obtener Orden por Id del Store
 router.get('/:id', getOrderByStoreId);
 
+// Eliminar producto
+router.delete('/:id', deleteOrder);
+
 // Todos deben pasar por la validacion del JWT
 router.use(validarJWT);
 // Crear una nueva orden
@@ -25,7 +28,5 @@ router.post('/',
     createOrder
 );
 
-// Eliminar producto
-router.delete('/:id', deleteOrder);
 
 module.exports = router;

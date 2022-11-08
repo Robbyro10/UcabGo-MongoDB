@@ -1,36 +1,31 @@
 const {Router} = require('express');
 const { check } = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos');
-const { crearUsuario, loginUsuario, getClients, revalidarToken } =  require('../controllers/clients');
+const { crearAdmin, loginAdmin, revalidarToken } =  require('../controllers/admins');
 const { validarJWT } = require('../middlewares/validar-jwt');
 
 const router = Router();
 
-
-    router.post(
+router.post(
     '/new', 
     [
         check('name', 'El nombre es obligatorio').not().isEmpty(),
         check('email', 'El email es obligatorio').isEmail(),
-        check('email', 'Debe ser un correo de la UCAB').contains('ucab.edu.ve'),
-        check('phone', 'El numero telefonico es obligatorio').not().isEmpty(),
         check('password', 'El password debe ser de 6 caracteres').isLength({min: 6}),
         validarCampos
     ]
-    , crearUsuario);
-    
-    router.post('/', 
+    , crearAdmin);
+
+router.post('/', 
     [
         check('email', 'El email es obligatorio').isEmail(),
         check('password', 'El password debe ser de 6 caracteres').isLength({min: 6}),
         validarCampos
     ],
-    loginUsuario);
-    
-    // Obtener clientes
-    router.get('/', getClients);
-
-    router.get('/renew', validarJWT, revalidarToken);
+    loginAdmin);
 
 
-    module.exports = router;
+router.get('/renew', validarJWT, revalidarToken);
+
+
+module.exports = router;

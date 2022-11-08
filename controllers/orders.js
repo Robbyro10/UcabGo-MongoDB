@@ -4,7 +4,7 @@ const Product = require('../models/Product');
 
 const getOrder = async (req, res = response) => {
 
-    const orders = await Order.find().populate('user product');
+    const orders = await Order.find()
 
     res.json({
         ok: true,
@@ -19,11 +19,11 @@ const getOrderByStoreId = async (req, res = response) => {
     
     try {
         
-        const orders = await Order.find().populate('product user')
+        const AllOrders = await Order.find().populate('product user')
 
-        const filteredOrders = orders.filter((order) => JSON.stringify(order.product.store._id) == `"${storeId}"`);
+        const orders = AllOrders.filter((order) => JSON.stringify(order.product.store._id) == `"${storeId}"`);
 
-        if (!filteredOrders) {
+        if (!orders) {
             return res.status(404).json({
                 ok: false,
                 msg: 'Orders not found from that store'
@@ -32,7 +32,7 @@ const getOrderByStoreId = async (req, res = response) => {
 
         res.json({
             ok: true,
-            filteredOrders
+            orders
         });
 
 
@@ -63,6 +63,7 @@ const createOrder = async (req, res = response) => {
 
     } catch (error) {
         console.log(error);
+        
         res.status(500).json({
             ok: false, 
             msg: 'Algo salio mal'
@@ -83,13 +84,6 @@ const deleteOrder = async (req, res = response) => {
             return res.status(404).json({
                 ok: false,
                 msg: 'Order not found with id'
-            })
-        }
-
-        if ( order.user.toString() !== uid ) {
-            return res.status(401).json({
-                ok: false,
-                msg: 'No tiene el privilegio de eliminar ese pedido'
             })
         }
 

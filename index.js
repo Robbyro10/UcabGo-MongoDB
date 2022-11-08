@@ -20,9 +20,11 @@ app.use(express.json());
 
 // Routes
 app.use('/api/clients', require('./routes/clients'));
+app.use('/api/stores', require('./routes/stores'));
+app.use('/api/admins', require('./routes/admins'));
 app.use('/api/products', require('./routes/products'));
 app.use('/api/orders', require('./routes/orders'));
-app.use('/api/stores', require('./routes/stores'));
+// app.use('/api/orderProducts', require('./routes/orderProducts'));
 
 //listen petitions
 app.listen(process.env.PORT, () => {

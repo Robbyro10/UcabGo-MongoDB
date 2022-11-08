@@ -1,66 +1,74 @@
 const {response, request} = require('express');
 const bcrypt = require('bcryptjs');
-const Client = require('../models/Client');
+const Admin = require('../models/Admins');
 const { generarJWT } = require('../helpers/jwt')
 
-const crearUsuario = async (req, res = response) => {
+const crearAdmin = async (req, res = response) => {
 
     const {email, password} = req.body;
+    const validEmails = ["jgh2748@gmail.com", "marugalvis04@gmail.com", "luiselian001@gmail.com", "Joywg14@gmail.com"]
     
     try {
 
-        let usuario = await Client.findOne({email});
+        let admin = await Admin.findOne({email});
         
-        if (usuario) {
+        if (admin) {
             return res.status(400).json({
                 ok: false,
-                msg:'Un usuario ya existe con ese correo'
+                msg:'Un administrador ya existe con ese correo'
             })
         }
 
-        usuario = new Client(req.body);
+        if (!validEmails.includes(email)) {
+            return res.status(400).json({
+                ok: false,
+                msg:'Acceso negado'
+            })
+        }
+
+        admin = new Admin(req.body);
 
         //Encriptar contraseña
         const salt = bcrypt.genSaltSync();
-        usuario.password = bcrypt.hashSync(password, salt)
+        admin.password = bcrypt.hashSync(password, salt)
     
-        await usuario.save();
+        await admin.save();
     
         // Generar JWT
-        const token = await generarJWT(usuario.id, usuario.name);
+        const token = await generarJWT(admin.id, admin.name);
 
         res.status(201).json({
             ok: true,
-            uid: usuario.id,
-            name: usuario.name,
+            uid: admin.id,
+            name: admin.name,
             token
         });
         
     } catch (error) {
         res.status(500).json({
             ok: false,
-            msg: 'Por favor hable con el admin'
+            msg: 'Ocurrio un error inesperado'
         });
     }
 }
 
-const loginUsuario = async(req, res = response) => {
+const loginAdmin = async(req, res = response) => {
 
     const { email, password } =  req.body;
 
     try {
         
-        const usuario = await Client.findOne({email});
+        const admin = await Admin.findOne({email});
         
-        if (!usuario) {
+        if (!admin) {
             return res.status(400).json({
                 ok: false,
-                msg:'No existe un usuario con ese correo'
+                msg:'No existe un admin con ese correo'
             });
         }
 
         // Confirmar password
-        const validPassword = bcrypt.compareSync(password, usuario.password);
+        const validPassword = bcrypt.compareSync(password, admin.password);
         if ( !validPassword ) {
             return res.status(400).json({
                 ok: false,
@@ -69,12 +77,12 @@ const loginUsuario = async(req, res = response) => {
         }
 
         // Generar JWT
-        const token = await generarJWT(usuario.id, usuario.name);
+        const token = await generarJWT(admin.id, admin.name);
 
         res.json({
             ok: true,
-            uid: usuario.id,
-            name: usuario.name,
+            uid: admin.id,
+            name: admin.name,
             token
         })
 
@@ -85,16 +93,6 @@ const loginUsuario = async(req, res = response) => {
             msg: 'Por favor hable con el admin'
         });
     }
-}
-
-const getClients = async(req, res = response) => {
-
-    const clients = await Client.find();
-
-    res.json({
-        ok: true,
-        clients
-    });
 }
 
 const revalidarToken = async (req, res = response) => {
@@ -112,8 +110,7 @@ const revalidarToken = async (req, res = response) => {
     })
 }
 module.exports = {
-    crearUsuario,
-    loginUsuario,
-    getClients,
+    crearAdmin,
+    loginAdmin,
     revalidarToken
 }
