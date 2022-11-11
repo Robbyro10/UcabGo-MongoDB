@@ -22,6 +22,15 @@ const OrderSchema = Schema({
     appearance: {
         type: String,
     },
+    status: {
+        type: String,
+    },
+    quantity: {
+        type: String,
+    },
+    notes: {
+        type: String,
+    },
     user: {
         type: Schema.Types.ObjectId,
         ref: 'Client',
