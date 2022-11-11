@@ -71,6 +71,36 @@ const createOrder = async (req, res = response) => {
     }
 }
 
+const dispatchOrder = async (req, res = response) => {
+
+    const orderId = req.params.id;
+
+    try {
+        
+        const order = await Order.findById(orderId);
+
+        if (!order) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Order not found with id'
+            })
+        }
+
+        const dispatchedOrder = await Order.findByIdAndUpdate(orderId, {status: "Despachado"} );
+        res.json({
+            ok: true,
+            product: dispatchedOrder
+        });
+
+
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            msg: 'Algo salio mal'
+        })
+    }
+}
+
 const deleteOrder = async (req, res = response) => {
 
     const orderId = req.params.id;
@@ -106,6 +136,7 @@ const deleteOrder = async (req, res = response) => {
 module.exports = {
     getOrder,
     getOrderByStoreId,
+    dispatchOrder,
     createOrder,
     deleteOrder,
 }
