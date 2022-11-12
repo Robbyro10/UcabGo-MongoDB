@@ -86,7 +86,7 @@ const dispatchOrder = async (req, res = response) => {
             })
         }
 
-        const dispatchedOrder = await Order.findByIdAndUpdate(orderId, {status: "Despachado"} );
+        const dispatchedOrder = await Order.findByIdAndUpdate(orderId, {status: "Despachado"}, {new: true} );
         res.json({
             ok: true,
             product: dispatchedOrder
@@ -97,6 +97,36 @@ const dispatchOrder = async (req, res = response) => {
         res.status(500).json({
             ok: false,
             msg: 'Algo salio mal'
+        })
+    }
+}
+
+const editOrder = async (req, res = response) => {
+
+    const orderId = req.params.id;
+
+    try {
+
+        const order = await Order.findById(orderId);
+
+        if (!order) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Order not found with id'
+            })
+        }
+
+        const modifiedOrder = await Order.findByIdAndUpdate(orderId, {...req.body}, {new: true} );
+
+        res.json({
+            ok: true,
+            product: modifiedOrder
+        });
+        
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            msg: 'No se pudo editar el pedido'
         })
     }
 }
@@ -137,6 +167,7 @@ module.exports = {
     getOrder,
     getOrderByStoreId,
     dispatchOrder,
+    editOrder,
     createOrder,
     deleteOrder,
 }

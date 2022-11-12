@@ -2,7 +2,7 @@ const { Router } = require("express");
 const { check } = require("express-validator");
 const {validarCampos} = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { getOrder, createOrder, deleteOrder, getOrderByStoreId, dispatchOrder } = require('../controllers/orders');
+const { getOrder, createOrder, deleteOrder, getOrderByStoreId, dispatchOrder, editOrder } = require('../controllers/orders');
 
 const router = Router();
 
@@ -15,8 +15,12 @@ router.get('/:id', getOrderByStoreId);
 // Eliminar pedido
 router.delete('/:id', deleteOrder);
 
+// Modificar Pedido
+router.put('/:id', editOrder);
+
 // Marcar pedido como "Despachado"
-router.put('/:id', dispatchOrder);
+router.patch('/:id', dispatchOrder);
+
 
 // Todos deben pasar por la validacion del JWT
 router.use(validarJWT);
