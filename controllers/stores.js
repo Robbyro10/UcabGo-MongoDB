@@ -33,6 +33,12 @@ const createStore = async (req, res = response) => {
             ok: true,
             uid: store.id,
             name: store.name,
+            email: store.email,
+            desc: store.desc,
+            phone: store.phone,
+            location: store.location,
+            rif: store.rif,
+            img: store.img,
             token
         });
         
@@ -76,6 +82,12 @@ const loginStore = async(req, res = response) => {
             ok: true,
             uid: store.id,
             name: store.name,
+            email: store.email,
+            desc: store.desc,
+            phone: store.phone,
+            location: store.location,
+            rif: store.rif,
+            img: store.img,
             token
         })
 
@@ -124,6 +136,34 @@ const getStoreById = async(req, res = response) => {
     }
 }
 
+const updateStore = async(req, res = response) => {
+    const storeId = req.params.id;
+
+    try {
+        
+        const store = await Store.findById(storeId);
+        
+        if (!store) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Store not found with id'
+            })
+        }
+
+        const updatedStore = await Store.findByIdAndUpdate(storeId, req.body, {new: true});
+        res.json({
+            updatedStore
+        });
+
+
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            msg: 'Algo salio mal'
+        })
+    }
+}
+
 const revalidarToken = async (req, res = response) => {
 
     const { uid, name } = req;
@@ -131,10 +171,14 @@ const revalidarToken = async (req, res = response) => {
     // Generar JWT
     const token = await generarJWT(uid, name);
 
+    const {email, phone, desc, rif, location, img} = await Store.findOne({uid})
+
     res.json({
-        ok: true,
         uid, name,
-        token
+        email,
+        phone, desc,
+        rif, location,
+        img, token
         
     })
 }
@@ -144,5 +188,6 @@ module.exports = {
     loginStore,
     getStores,
     getStoreById,
+    updateStore,
     revalidarToken
 }

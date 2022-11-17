@@ -33,6 +33,8 @@ const crearUsuario = async (req, res = response) => {
             ok: true,
             uid: usuario.id,
             name: usuario.name,
+            email: usuario.email,
+            phone: usuario.phone,
             token
         });
         
@@ -75,6 +77,8 @@ const loginUsuario = async(req, res = response) => {
             ok: true,
             uid: usuario.id,
             name: usuario.name,
+            email: usuario.email,
+            phone: usuario.phone,
             token
         })
 
@@ -97,6 +101,35 @@ const getClients = async(req, res = response) => {
     });
 }
 
+const updateClient = async(req, res = response) => {
+    const clientId = req.params.id;
+
+    try {
+        
+        const client = await Client.findById(clientId);
+
+        if (!client) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Client not found with id'
+            })
+        }
+
+        const updatedClient = await Client.findByIdAndUpdate(clientId, req.body, {new: true});
+        res.json({
+            updatedClient
+        });
+
+
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            msg: 'Algo salio mal'
+        })
+    }
+}
+
+
 const revalidarToken = async (req, res = response) => {
 
     const { uid, name } = req;
@@ -104,16 +137,17 @@ const revalidarToken = async (req, res = response) => {
     // Generar JWT
     const token = await generarJWT(uid, name);
 
+    const {email, phone} = await Client.findOne({uid})
+
     res.json({
-        ok: true,
-        uid, name,
-        token
-        
+        email, phone, 
+        uid, name, token
     })
 }
 module.exports = {
     crearUsuario,
     loginUsuario,
+    updateClient,
     getClients,
     revalidarToken
 }
