@@ -4,7 +4,7 @@ const Product = require('../models/Product');
 
 const getOrder = async (req, res = response) => {
 
-    const orders = await Order.find()
+    const orders = await Order.find().populate('product')
 
     res.json({
         ok: true,
@@ -116,11 +116,10 @@ const editOrder = async (req, res = response) => {
             })
         }
 
-        const modifiedOrder = await Order.findByIdAndUpdate(orderId, {...req.body}, {new: true} );
+        const modifiedOrder = await Order.findByIdAndUpdate(orderId, req.body, {new: true} );
 
         res.json({
-            ok: true,
-            product: modifiedOrder
+            modifiedOrder
         });
         
     } catch (error) {
