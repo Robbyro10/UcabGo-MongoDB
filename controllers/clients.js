@@ -129,6 +129,38 @@ const updateClient = async(req, res = response) => {
     }
 }
 
+const changePassword = async (req, res = response) => {
+    const clientId = req.params.id;
+    const {password} = req.body;
+
+    try {
+        
+        const client = await Client.findById(clientId);
+
+        if (!client) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Client not found with id'
+            })
+        }
+
+        const salt = bcrypt.genSaltSync();
+        client.password = bcrypt.hashSync(password, salt)
+
+        const updatedClient = await Client.findByIdAndUpdate(clientId, req.body, {new: true});
+        res.json({
+            updatedClient
+        });
+
+
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            msg: 'Algo salio mal'
+        })
+    }
+}
+
 
 const revalidarToken = async (req, res = response) => {
 
@@ -148,6 +180,7 @@ module.exports = {
     crearUsuario,
     loginUsuario,
     updateClient,
+    changePassword,
     getClients,
     revalidarToken
 }
