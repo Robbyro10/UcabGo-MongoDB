@@ -164,6 +164,38 @@ const updateStore = async(req, res = response) => {
     }
 }
 
+const changePassword = async (req, res = response) => {
+    const storeId = req.params.id;
+    const {password} = req.body;
+
+    try {
+        
+        const store = await Store.findById(storeId);
+
+        if (!store) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Store not found with id'
+            })
+        }
+
+        const salt = bcrypt.genSaltSync();
+        store.password = bcrypt.hashSync(password, salt)
+
+        const updatedStore = await Store.findByIdAndUpdate(storeId, store, {new: true});
+        res.json({
+            updatedStore
+        });
+
+
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            msg: 'Algo salio mal'
+        })
+    }
+}
+
 const revalidarToken = async (req, res = response) => {
 
     const { uid, name } = req;
@@ -186,6 +218,7 @@ const revalidarToken = async (req, res = response) => {
 module.exports = {
     createStore,
     loginStore,
+    changePassword,
     getStores,
     getStoreById,
     updateStore,

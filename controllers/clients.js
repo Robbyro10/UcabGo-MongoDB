@@ -147,7 +147,7 @@ const changePassword = async (req, res = response) => {
         const salt = bcrypt.genSaltSync();
         client.password = bcrypt.hashSync(password, salt)
 
-        const updatedClient = await Client.findByIdAndUpdate(clientId, req.body, {new: true});
+        const updatedClient = await Client.findByIdAndUpdate(clientId, client, {new: true});
         res.json({
             updatedClient
         });
