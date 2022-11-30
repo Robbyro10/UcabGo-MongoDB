@@ -34,6 +34,7 @@ const StoreSchema = Schema({
     desc: {
         type: String,
         required: true,
+        trim: true,
     },
 });
 

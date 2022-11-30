@@ -3,7 +3,7 @@ const Product = require('../models/Product');
 
 const getProduct = async (req, res = response) => {
 
-    const products = await Product.find().populate('store','name');
+    const products = await Product.find({active: true}).populate('store','name');
 
     res.json({
         ok: true,
@@ -13,9 +13,19 @@ const getProduct = async (req, res = response) => {
 
 const createProduct = async (req, res = response) => {
 
-    const product = new Product(req.body);
+    const {name} = req.body
     
     try {
+        let product = await Product.findOne({name})
+
+        if (product) {
+            return res.status(400).json({
+                ok: false,
+                msg:'Un producto ya existe con ese nombre'
+            })
+        }
+
+        product = new Product(req.body);
         product.store = req.uid;
 
         const savedProduct = await product.save();
@@ -104,7 +114,6 @@ const updateProduct = async (req, res = response) => {
 const deleteProduct = async (req, res = response) => {
 
     const productId = req.params.id;
-    const uid = req.uid;
 
     try {
         
@@ -117,7 +126,7 @@ const deleteProduct = async (req, res = response) => {
             })
         }
 
-        await Product.findByIdAndDelete(productId);
+        await Product.findByIdAndUpdate(productId, {active: false});
         res.json({
             ok: true,
             msg: 'Product deleted successfully'

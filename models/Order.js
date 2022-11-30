@@ -7,7 +7,8 @@ const OrderSchema = Schema({
     },
     detail: {
         type: String,
-        required: true
+        required: true,
+        trim: true,
     },
     payment: {
         type: String, 
@@ -21,6 +22,7 @@ const OrderSchema = Schema({
     },
     appearance: {
         type: String,
+        trim: true,
     },
     status: {
         type: String,
@@ -30,6 +32,7 @@ const OrderSchema = Schema({
     },
     notes: {
         type: String,
+        trim: true,
     },
     user: {
         type: Schema.Types.ObjectId,
@@ -42,6 +45,12 @@ const OrderSchema = Schema({
         required: true
     }
 });
+
+OrderSchema.pre("save", function (next){
+    this.notes = this.notes.charAt(0).toUpperCase() + this.notes.slice(1);
+    this.detail = this.detail.charAt(0).toUpperCase() + this.detail.slice(1);
+    next();
+})
 
 OrderSchema.method('toJSON', function() {
     const { __v, _id, ...object} = this.toObject();
