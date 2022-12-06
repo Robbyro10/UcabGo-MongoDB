@@ -1,7 +1,7 @@
 const {Router} = require('express');
 const { check } = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos');
-const { createStore, loginStore, revalidarToken, getStores, getStoreById, updateStore, changePassword } =  require('../controllers/stores');
+const { createStore, loginStore, revalidarToken, getStores, getStoreById, updateStore, changePassword, activateStore, deleteStore } =  require('../controllers/stores');
 const { validarJWT } = require('../middlewares/validar-jwt');
 
 const router = Router();
@@ -30,13 +30,16 @@ router.post(
 
     
     router.get('/', getStores);
+
+    router.delete('/:id', deleteStore);
+
+    router.patch('/activate/:id', activateStore);
     
     // cambiar contraseña
     router.patch('/:id', changePassword);
 
     router.put('/:id', updateStore);
 
-    
     router.get('/renew', validarJWT, revalidarToken);
     
     router.get('/:id', getStoreById);

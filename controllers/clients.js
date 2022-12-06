@@ -61,6 +61,13 @@ const loginUsuario = async(req, res = response) => {
             });
         }
 
+        if (!usuario.active) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'Su cuenta esta bloqueada'
+            })
+        }
+
         // Confirmar password
         const validPassword = bcrypt.compareSync(password, usuario.password);
         if ( !validPassword ) {
@@ -176,11 +183,72 @@ const revalidarToken = async (req, res = response) => {
         uid, name, token
     })
 }
+
+const activateClient = async (req, res = response) => {
+    const clientId = req.params.id;
+
+    try {
+        
+        const client = await Client.findById(clientId);
+
+        if (!client) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Client not found with id'
+            })
+        }
+
+        await Client.findByIdAndUpdate(clientId, {active: true});
+        res.json({
+            ok: true,
+            msg: 'Client activated successfully'
+        })
+
+
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            msg: 'Algo salio mal'
+        })
+    }
+}
+
+const deleteClient = async (req, res = response) => {
+    const clientId = req.params.id;
+
+    try {
+        
+        const client = await Client.findById(clientId);
+
+        if (!client) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Client not found with id'
+            })
+        }
+
+        await Client.findByIdAndUpdate(clientId, {active: false});
+        res.json({
+            ok: true,
+            msg: 'Client deleted successfully'
+        })
+
+
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            msg: 'Algo salio mal'
+        })
+    }
+}
+
 module.exports = {
     crearUsuario,
     loginUsuario,
     updateClient,
     changePassword,
     getClients,
-    revalidarToken
+    revalidarToken,
+    deleteClient,
+    activateClient
 }

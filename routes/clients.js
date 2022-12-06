@@ -1,7 +1,7 @@
 const {Router} = require('express');
 const { check } = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos');
-const { crearUsuario, loginUsuario, getClients, revalidarToken, updateClient, changePassword } =  require('../controllers/clients');
+const { crearUsuario, loginUsuario, getClients, revalidarToken, updateClient, changePassword, activateClient, deleteClient } =  require('../controllers/clients');
 const { validarJWT } = require('../middlewares/validar-jwt');
 
 const router = Router();
@@ -30,11 +30,15 @@ const router = Router();
     // Obtener clientes
     router.get('/', getClients);
 
+    router.delete('/:id', deleteClient);
+
+    router.patch('/activate/:id', activateClient);
+
     // cambiar contraseña
     router.patch('/:id', changePassword);
 
     router.put('/:id', updateClient);
-
+     
     router.get('/renew', validarJWT, revalidarToken);
 
 

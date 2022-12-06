@@ -18,7 +18,12 @@ const ClientSchema = Schema({
     password: {
         type: String,
         required: true,
-    }
+    },
+    active: {
+        type: Boolean, 
+        required: true,
+        default: true,
+    },
 });
 
 module.exports = model('Client', ClientSchema);

@@ -36,6 +36,11 @@ const StoreSchema = Schema({
         required: true,
         trim: true,
     },
+    active: {
+        type: Boolean, 
+        required: true,
+        default: true,
+    },
 });
 
 module.exports = model('Store', StoreSchema);

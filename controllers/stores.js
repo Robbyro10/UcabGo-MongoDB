@@ -215,6 +215,64 @@ const revalidarToken = async (req, res = response) => {
     })
 }
 
+const activateStore = async (req, res = response) => {
+    const storeId = req.params.id;
+
+    try {
+        
+        const store = await Store.findById(storeId);
+
+        if (!store) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Store not found with id'
+            })
+        }
+
+        await Store.findByIdAndUpdate(storeId, {active: true});
+        res.json({
+            ok: true,
+            msg: 'Store activated successfully'
+        })
+
+
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            msg: 'Algo salio mal'
+        })
+    }
+}
+
+const deleteStore = async (req, res = response) => {
+    const storeId = req.params.id;
+
+    try {
+        
+        const store = await Store.findById(storeId);
+
+        if (!store) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Store not found with id'
+            })
+        }
+
+        await Store.findByIdAndUpdate(storeId, {active: false});
+        res.json({
+            ok: true,
+            msg: 'Store deleted successfully'
+        })
+
+
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            msg: 'Algo salio mal'
+        })
+    }
+}
+
 module.exports = {
     createStore,
     loginStore,
@@ -222,5 +280,7 @@ module.exports = {
     getStores,
     getStoreById,
     updateStore,
-    revalidarToken
+    revalidarToken,
+    activateStore,
+    deleteStore,
 }
