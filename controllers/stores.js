@@ -66,6 +66,13 @@ const loginStore = async(req, res = response) => {
             });
         }
 
+        if (!store.active) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'Su cuenta esta bloqueada'
+            })
+        }
+
         // Confirmar password
         const validPassword = bcrypt.compareSync(password, store.password);
         if ( !validPassword ) {
