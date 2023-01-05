@@ -132,7 +132,7 @@ const editOrder = async (req, res = response) => {
 const deleteOrder = async (req, res = response) => {
 
     const orderId = req.params.id;
-    const uid = req.uid;
+    // const uid = req.uid;
 
     try {
         
