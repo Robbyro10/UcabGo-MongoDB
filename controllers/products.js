@@ -18,7 +18,7 @@ const createProduct = async (req, res = response) => {
     try {
         let product = await Product.findOne({name})
 
-        if (product) {
+        if (product && product.active === true) {
             return res.status(400).json({
                 ok: false,
                 msg:'Un producto ya existe con ese nombre'
@@ -36,6 +36,7 @@ const createProduct = async (req, res = response) => {
             ok: true,
             product: savedProduct
         });
+        
 
     } catch (error) {
         console.log(error);
